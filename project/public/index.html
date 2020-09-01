@@ -24,11 +24,25 @@
         <a href="Shopping Cart.html" class="headerCart">
             <img src="../src/assets/icons/Forma 1.png" alt="">
         </a>
+
+
         <div class="cart">
             <div class="btnCart">
-                <button class="accountBtn">My Account <i class="fas fa-caret-down"></i></button>
+                <button id="basket-toggler" class="accountBtn">
+                    My Account
+                    <i class="fas fa-caret-down">
+                    </i>
+                </button>
+                <div class="headerCartWrap invisible" id="basket">
+                    <div id="busket-items">
+
+                    </div>
+                </div>
             </div>
         </div>
+
+
+
     </header>
     <div class="headerLine"></div>
     <nav class="topNav">
@@ -262,6 +276,7 @@
             </div>
         </div>
     </footer>
+    <script src="../src/compounents/js/basket.js"></script>
     <script src="../src/compounents/js/catalog.js"></script>
 </body>
 
