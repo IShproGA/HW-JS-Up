@@ -3,12 +3,17 @@ let basket = {
     container: null,
     containerItems: null,
     shown: false,
-    url: '#',
+    url: 'https://raw.githubusercontent.com/IShproGA/static/master/JSON/catalog.json',
+    _getData(url) {
+        return fetch(url)
+            .then(dataFromGit => dataFromGit.json())
+    },
     init() {
-        this.container = document.querySelector('#goodsBox');
+        this.container = document.querySelector('#basket');
+        this.containerItems = document.querySelector('#basket-items');
         this._getData(this.url)
             .then(basket => {
-                this.items = basket.content;
+                this.items = basket;
             })
             .then(() => {
                 this._render();
@@ -19,42 +24,56 @@ let basket = {
         let html = '';
         this.items.forEach(us => {
             html += `
-                        <div class="good">
-                            <div class="wrapedImgToCart">
-                                <div class="butonBuy">
-                                    <button
-                                        name="addToCart""
-                                        data-id="${us.id}"
-                                        data-brand="${us.brand}"
-                                        data-src="${us.img}"
-                                        data-price="${us.price}">
-                                        <img src="../src/assets/icons/cart.png" alt="">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                                <img class="fotoBuy" src="${us.img}" alt="">
-                            </div>
-                            <div class="clothesBrand">
-                                <div class="textBrand">
+                        <div class="basketGood">
+                            <img class="basketFoto" src="${us.img}" alt=""> 
+                            <div class="basketClothesBrand">
+                                <div class="basketTextBrand">
                                     ${us.brand}
                                 </div>
-                                <div class="price">
-                                    ${us.price}
+                                <div class="basketPrice">
+                                    $${us.price}
+                                     X ${us.amount}
                                 </div>
                             </div>
+                            <div class="remoov">
+                                <button class="remuve" id="remuve" name="remuve"
+                                data-id="${us._id}">
+                                X
+                                </button>
+                            </div>
                         </div>
-                    
                     `
         })
         this.container.innerHTML = html;
     },
     _handleEvents() {
-        this.container.addEventListener('click', this._addToCart.bind(this))
+        document.querySelector('#basket-toggler').addEventListener('click', () => {
+            this.container.classList.toggle('invisible');
+            this.shown = !this.shown;
+        })
+        this.container.addEventListener('click', ev => {
+            if (ev.target.name == 'remuve') {
+                this._remove(ev.target.dataset.id);
+            }
+        })
     },
-    _addToCart(evt) {
-        if (evt.target.name == 'addToCart') {
-            this.myCart += [evt.target.dataset.brand, evt.target.dataset.price, evt.target.dataset.img, evt.target.dataset.id]
+    addToCart(item) {
+        let find = this.items.find(el => el._id == item._id);
+        if (find) {
+            find.amount++;
+        } else {
+            this.items.push(item);
         }
+        this._render();
+    },
+    _remove(id) {
+        let find = this.items.find(el => el._id == id);
+        if (find.amount > 1) {
+            find.amount--;
+        } else {
+            this.items.splice(this.items.indexOf(find), 1);
+        }
+        this._render();
     }
 }
-catalog.init();
+basket.init();
