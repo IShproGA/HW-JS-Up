@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuejs</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    body {
+        font-family: sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    input[type="text"] {
+        width: 350px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    ol {
+        padding-left: 0;
+    }
+
+    li {
+        border-bottom: 1px solid #000;
+        padding-bottom: 16px;
+        padding-top: 16px;
+        font-size: 18px;
+        list-style-position: inside;
+    }
+</style>
+
+<body>
+    <div class="app">
+        <h1>Список</h1>
+        <input type="text" v-model="productName" @keyup.enter="addProduct()" autofocus>
+        <ol>
+            <li v-for="product in cart">{{ product }}</li>
+        </ol>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '.app',
+            data: {
+                productName: '',
+                cart: []
+            },
+            methods: {
+                addProduct: function () {
+                    this.cart.push(this.productName);
+                    this.productName = '';
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
